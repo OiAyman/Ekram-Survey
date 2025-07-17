@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>استبيان تحديث بيانات</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .header img {
+      height: 60px;
+    }
+    .header h2 {
+      margin: 0;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .submit-btn:hover {
+      background: #2980b9;
+    }
+    .input-group-addon {
+      padding: 10px;
+      background: #eee;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-radius: 0 5px 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo-ekram.png" alt="شعار إكرام" />
+      <h2>استبيان تحديث بيانات</h2>
+    </div>
+
+    <form id="dataForm">
+      <label>رقم الهوية</label>
+      <input type="text" name="idNumber" required>
+
+      <label>الاسم</label>
+      <input type="text" name="name" required>
+
+      <label>تاريخ الميلاد (ضرورة كتابة التاريخ بالميلادي)</label>
+      <div class="input-group date" id="dob_picker">
+        <input type="text" class="form-control" name="dob" id="dob" autocomplete="off" required>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+      </div>
+
+      <label>رقم الجوال</label>
+      <input type="text" name="phone" required>
+
+      <label>الحي</label>
+      <input type="text" name="neighborhood" required>
+
+      <label>نوع السكن</label>
+      <select name="housingType" required>
+        <option value="">-- اختر --</option>
+        <option>ملك</option>
+        <option>إيجار</option>
+        <option>يسكن مع الغير</option>
+        <option>أخرى</option>
+      </select>
+
+      <label>مقدار الإيجار السنوي</label>
+      <input type="number" name="rentAmount" min="0">
+
+      <label>نوع الدخل</label>
+      <select name="incomeType" required>
+        <option value="">-- اختر --</option>
+        <option>راتب</option>
+        <option>ضمان اجتماعي</option>
+        <option>حساب مواطن</option>
+        <option>تقاعد</option>
+        <option>لا يوجد</option>
+      </select>
+
+      <label>الحالة الأسرية</label>
+      <select name="maritalStatus" required>
+        <option value="">-- اختر --</option>
+        <option>أعزب</option>
+        <option>متزوج</option>
+        <option>أرملة مع أولادها</option>
+        <option>مطلقة مع أولادها</option>
+      </select>
+
+      <label>عدد الزوجات</label>
+      <input type="number" name="wivesCount" min="0">
+
+      <label>عدد الأفراد</label>
+      <input type="number" name="familyCount" min="1" required>
+
+      <label>عدد المرافقون</label>
+      <input type="number" name="companionsCount" min="0">
+
+      <label>الدخل الشهري</label>
+      <input type="number" name="monthlyIncome" min="0">
+
+      <button type="submit" class="submit-btn">إرسال</button>
+    </form>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ar.min.js"></script>
+
+  <script>
+    $(function () {
+      $('#dob_picker').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        endDate: '-18y',
+        language: 'ar'
+      });
+
+      $('#dataForm').on('submit', function (e) {
+        e.preventDefault();
+
+        fetch('https://script.google.com/macros/s/AKfycbw5HZiHKpz_XgnbW9cF-FCuFzOhVvOtklDw5Z20G1NyB7zCVu3-2yzXxLVssTlZU2GXDg/exec', {
+          method: 'POST',
+          body: new FormData(this)
+        })
+        .then(res => res.text())
+        .then(() => {
+          alert('✅ تم الإرسال بنجاح');
+          this.reset();
+        })
+        .catch(() => alert('❌ حدث خطأ أثناء الإرسال'));
+      });
+    });
+  </script>
+</body>
+</html>
