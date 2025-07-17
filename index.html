@@ -90,11 +90,9 @@
       <label>الاسم</label>
       <input type="text" name="name" required>
 
-      <label>تاريخ الميلاد (ضرورة كتابة التاريخ بالميلادي)</label>
-      <div class="input-group date" id="dob_picker">
-        <input type="text" class="form-control" name="dob" id="dob" autocomplete="off" required>
-        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-      </div>
+      <label for="dob">تاريخ الميلاد (ضرورة كتابة التاريخ بالسنة الميلادية)</label>
+      <input type="date" id="dob" name="dob" required max="2007-12-31" min="1900-01-01">
+    </div>
 
       <label>رقم الجوال</label>
       <input type="text" name="phone" required>
@@ -155,16 +153,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ar.min.js"></script>
 
-  <script>
-    $(function () {
-      $('#dob_picker').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        endDate: '-18y',
-        language: 'ar'
-        todayHighlight: true,
-        clearBtn: true
-      });
+ <script>
+  window.onload = function() {
+    const dobInput = document.getElementById('dob');
+    const today = new Date();
+    const year = today.getFullYear() - 18;
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    dobInput.max = `${year}-${month}-${day}`;
+    dobInput.min = '1900-01-01';
+  };
 
       $('#dataForm').on('submit', function (e) {
         e.preventDefault();
@@ -180,7 +178,7 @@
         })
         .catch(() => alert('❌ حدث خطأ أثناء الإرسال'));
       });
-    });
+    ;
   </script>
 </body>
 </html>
